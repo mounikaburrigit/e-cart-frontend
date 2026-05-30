@@ -5,9 +5,8 @@ import {
   FaHeart,
   FaMoon,
   FaSun,
-  FaUserCircle
+  FaUserCircle,
 } from "react-icons/fa";
-
 
 import {
   useNavigate,
@@ -29,6 +28,11 @@ const Navbar = ({
   /* LOGIN STATE */
 
   const [isLoggedIn, setIsLoggedIn] =
+    useState(false);
+
+  /* DROPDOWN */
+
+  const [showDropdown, setShowDropdown] =
     useState(false);
 
   /* TOKEN CHECK */
@@ -157,41 +161,134 @@ const Navbar = ({
           text-xl
         "
         >
-          {/* LOGIN / LOGOUT */}
+          {/* PROFILE DROPDOWN */}
 
-          {isLoggedIn ? (
-            <button
-              onClick={logout}
-              className="
-              flex
-              items-center
-              gap-2
-            "
-            >
-            <FaUserCircle/>
+          <div className="relative">
+            {isLoggedIn ? (
+              <>
+                <button
+                  onClick={() =>
+                    setShowDropdown(
+                      !showDropdown
+                    )
+                  }
+                  className="
+                  flex
+                  items-center
+                  gap-2
+                  text-2xl
+                "
+                >
+                  <FaUserCircle />
 
-              <span className="hidden md:block">
-                Logout
-              </span>
-            </button>
-          ) : (
-            <button
-              onClick={() =>
-                navigate("/login")
-              }
-              className="
-              flex
-              items-center
-              gap-2
-            "
-            >
-              <FaUser />
+                  <span className="hidden md:block text-base">
+                    Login
+                  </span>
+                </button>
 
-              <span className="hidden md:block">
-                Login
-              </span>
-            </button>
-          )}
+                {/* DROPDOWN */}
+
+                {showDropdown && (
+                  <div
+                    className="
+                    absolute
+                    right-0
+                    mt-4
+                    w-56
+                    bg-white
+                    text-black
+                    rounded-2xl
+                    shadow-2xl
+                    overflow-hidden
+                    z-50
+                  "
+                  >
+                    <button
+                      onClick={() =>
+                        navigate(
+                          "/profile"
+                        )
+                      }
+                      className="
+                      w-full
+                      text-left
+                      px-6
+                      py-4
+                      hover:bg-gray-100
+                    "
+                    >
+                      My Profile
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        navigate(
+                          "/cart"
+                        )
+                      }
+                      className="
+                      w-full
+                      text-left
+                      px-6
+                      py-4
+                      hover:bg-gray-100
+                    "
+                    >
+                      My Orders
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        navigate(
+                          "/wishlist"
+                        )
+                      }
+                      className="
+                      w-full
+                      text-left
+                      px-6
+                      py-4
+                      hover:bg-gray-100
+                    "
+                    >
+                      Wishlist
+                    </button>
+
+                    <button
+                      onClick={logout}
+                      className="
+                      w-full
+                      text-left
+                      px-6
+                      py-4
+                      text-red-500
+                      hover:bg-red-50
+                    "
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() =>
+                  navigate("/login")
+                }
+                className="
+                flex
+                items-center
+                gap-2
+              "
+              >
+                <FaUser />
+
+                <span className="hidden md:block">
+                  Login
+                </span>
+              </button>
+            )}
+          </div>
 
           {/* WISHLIST */}
 

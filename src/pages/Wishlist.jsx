@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
   useEffect,
   useState,
@@ -5,6 +6,7 @@ import {
 
 import {
   FaTrash,
+  
 } from 'react-icons/fa'
 
 import Navbar from '../components/Navbar'

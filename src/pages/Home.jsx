@@ -1,10 +1,16 @@
+/* eslint-disable no-useless-assignment */
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/immutability */
 import {useEffect, useState} from 'react'
 
 import axios from 'axios'
 
 import {useNavigate} from 'react-router-dom'
 
-import {FaHeart} from 'react-icons/fa'
+import {
+  FaHeart,
+  FaRegHeart,
+} from 'react-icons/fa'
 
 import Navbar from '../components/Navbar'
 
@@ -19,33 +25,59 @@ const Home = () => {
 
   const [sortOption, setSortOption] =
     useState('')
-    const [darkMode, setDarkMode] =
-  useState(false)
+
+  const [darkMode, setDarkMode] =
+    useState(false)
+
+  const [wishlist, setWishlist] =
+    useState([])
 
   const navigate = useNavigate()
-  
+
+  /* DARK MODE */
 
   useEffect(() => {
-  const theme =
-    localStorage.getItem(
-      'darkMode'
+    const theme =
+      localStorage.getItem(
+        'darkMode'
+      )
+
+    if (theme === 'true') {
+      setDarkMode(true)
+    }
+  }, [])
+
+  /* GET PRODUCTS */
+
+  useEffect(() => {
+    getProducts('')
+  }, [])
+
+  /* GET WISHLIST */
+
+  useEffect(() => {
+    const storedWishlist =
+      JSON.parse(
+        localStorage.getItem(
+          'wishlist'
+        )
+      ) || []
+
+    setWishlist(
+      storedWishlist
     )
+  }, [])
 
-  if (theme === 'true') {
-    setDarkMode(true)
-  }
-}, [])
+  /* SAVE DARK MODE */
 
-useEffect(() => {
-  getProducts('')
-}, [])
+  useEffect(() => {
+    localStorage.setItem(
+      'darkMode',
+      darkMode
+    )
+  }, [darkMode])
 
-useEffect(() => {
-  localStorage.setItem(
-    'darkMode',
-    darkMode
-  )
-}, [darkMode])
+  /* FETCH PRODUCTS */
 
   const getProducts = async category => {
     try {
@@ -66,7 +98,7 @@ useEffect(() => {
     }
   }
 
-  /* WISHLIST */
+  /* TOGGLE WISHLIST */
 
   const addToWishlist = product => {
     const existingWishlist =
@@ -76,29 +108,37 @@ useEffect(() => {
         )
       ) || []
 
-    const alreadyExists =
+    const isExists =
       existingWishlist.find(
-        item => item._id === product._id
+        item =>
+          item._id ===
+          product._id
       )
 
-    if (!alreadyExists) {
-      existingWishlist.push(product)
+    let updatedWishlist = []
 
-      localStorage.setItem(
-        'wishlist',
-        JSON.stringify(
-          existingWishlist
+    if (isExists) {
+      updatedWishlist =
+        existingWishlist.filter(
+          item =>
+            item._id !==
+            product._id
         )
-      )
-
-      alert(
-        'Added To Wishlist'
-      )
     } else {
-      alert(
-        'Already In Wishlist'
-      )
+      updatedWishlist = [
+        ...existingWishlist,
+        product,
+      ]
     }
+
+    localStorage.setItem(
+      'wishlist',
+      JSON.stringify(
+        updatedWishlist
+      )
+    )
+
+    setWishlist(updatedWishlist)
   }
 
   /* SEARCH */
@@ -133,23 +173,25 @@ useEffect(() => {
   return (
     <>
       <Navbar
-  search={search}
-  setSearch={setSearch}
-  darkMode={darkMode}
-  setDarkMode={setDarkMode}
-/>
+        search={search}
+        setSearch={setSearch}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
 
-      <div  className={`
-  min-h-screen
-  p-6
-  transition-all
-  duration-300
-  ${
-    darkMode
-      ? 'bg-black text-white'
-      : 'bg-gray-100 text-black'
-  }
-`}>
+      <div
+        className={`
+        min-h-screen
+        p-6
+        transition-all
+        duration-300
+        ${
+          darkMode
+            ? 'bg-black text-white'
+            : 'bg-gray-100 text-black'
+        }
+      `}
+      >
         <Categories
           getProducts={getProducts}
         />
@@ -186,6 +228,7 @@ useEffect(() => {
             rounded-xl
             outline-none
             bg-white
+            text-black
           "
           >
             <option value="">
@@ -242,12 +285,25 @@ useEffect(() => {
                   }}
                   className="
                   bg-white
-                  p-3
+                  w-14
+                  h-14
                   rounded-full
-                  shadow-md
+                  shadow-lg
+                  flex
+                  justify-center
+                  items-center
+                  text-2xl
                 "
                 >
-                  <FaHeart className="text-red-500" />
+                  {wishlist.some(
+                    item =>
+                      item._id ===
+                      product._id
+                  ) ? (
+                    <FaHeart className="text-red-500" />
+                  ) : (
+                    <FaRegHeart className="text-gray-400" />
+                  )}
                 </button>
               </div>
 
@@ -275,6 +331,7 @@ useEffect(() => {
                     className="
                     text-xl
                     font-bold
+                    text-black
                   "
                   >
                     {product.title}
