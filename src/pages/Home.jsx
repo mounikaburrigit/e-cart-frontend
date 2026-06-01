@@ -82,7 +82,7 @@ const Home = () => {
   const getProducts = async category => {
     try {
       let url =
-        'http://localhost:5000/api/products'
+        'https://e-cart-backend-39er.onrender.com/api/products'
 
       if (category) {
         url += `?category=${category}`
