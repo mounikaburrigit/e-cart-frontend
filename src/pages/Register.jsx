@@ -72,7 +72,7 @@ const Register = () => {
     try {
       setError("");
 
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://e-cart-backend-39er.onrender.com/api/auth/register", {
         name: trimmedName,
         email: trimmedEmail,
         password: trimmedPassword,

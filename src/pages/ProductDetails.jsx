@@ -42,7 +42,7 @@ const ProductDetails = () => {
   const getProduct = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/${id}`
+        `https://e-cart-backend-39er.onrender.com/api/products/${id}`
       )
 
       setProduct(response.data)

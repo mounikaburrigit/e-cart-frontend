@@ -8,40 +8,37 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 
-import {
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-const Navbar = ({
-  search,
-  setSearch,
-  darkMode,
-  setDarkMode,
-}) => {
+const Navbar = ({ search, setSearch, darkMode, setDarkMode }) => {
   const navigate = useNavigate();
 
   /* LOGIN STATE */
 
-  const [isLoggedIn, setIsLoggedIn] =
-    useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(
+  "TOKEN:",
+  localStorage.getItem(
+    "token"
+  )
+)
+
+console.log(
+  "isLoggedIn:",
+  isLoggedIn
+)
+
 
   /* DROPDOWN */
 
-  const [showDropdown, setShowDropdown] =
-    useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   /* TOKEN CHECK */
 
   useEffect(() => {
-    const token =
-      localStorage.getItem(
-        "token"
-      );
+    const token = localStorage.getItem("token");
 
     if (token) {
       setIsLoggedIn(true);
@@ -53,9 +50,7 @@ const Navbar = ({
   /* LOGOUT */
 
   const logout = () => {
-    localStorage.removeItem(
-      "token"
-    );
+    localStorage.removeItem("token");
 
     setIsLoggedIn(false);
 
@@ -64,12 +59,7 @@ const Navbar = ({
 
   /* CART */
 
-  const cartItems =
-    JSON.parse(
-      localStorage.getItem(
-        "cart"
-      )
-    ) || [];
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
   return (
     <nav
@@ -78,11 +68,7 @@ const Navbar = ({
       top-0
       z-50
       shadow-md
-      ${
-        darkMode
-          ? "bg-gray-900 text-white"
-          : "bg-white text-black"
-      }
+      ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}
     `}
     >
       <div
@@ -100,9 +86,7 @@ const Navbar = ({
         {/* LOGO */}
 
         <h1
-          onClick={() =>
-            navigate("/")
-          }
+          onClick={() => navigate("/")}
           className="
           text-3xl
           font-bold
@@ -124,11 +108,7 @@ const Navbar = ({
           py-3
           flex-1
           max-w-2xl
-          ${
-            darkMode
-              ? "bg-gray-800"
-              : "bg-gray-100"
-          }
+          ${darkMode ? "bg-gray-800" : "bg-gray-100"}
         `}
         >
           <FaSearch className="text-gray-500" />
@@ -137,11 +117,7 @@ const Navbar = ({
             type="text"
             placeholder="Search products..."
             value={search}
-            onChange={e =>
-              setSearch(
-                e.target.value
-              )
-            }
+            onChange={(e) => setSearch(e.target.value)}
             className="
             bg-transparent
             outline-none
@@ -167,11 +143,7 @@ const Navbar = ({
             {isLoggedIn ? (
               <>
                 <button
-                  onClick={() =>
-                    setShowDropdown(
-                      !showDropdown
-                    )
-                  }
+                  onClick={() => setShowDropdown(!showDropdown)}
                   className="
                   flex
                   items-center
@@ -181,8 +153,11 @@ const Navbar = ({
                 >
                   <FaUserCircle />
 
+                 
+
                   <span className="hidden md:block text-base">
-                    Login
+                    {JSON.parse(localStorage.getItem("user"))?.name ||
+                      "Profile"}
                   </span>
                 </button>
 
@@ -204,11 +179,7 @@ const Navbar = ({
                   "
                   >
                     <button
-                      onClick={() =>
-                        navigate(
-                          "/profile"
-                        )
-                      }
+                      onClick={() => navigate("/profile")}
                       className="
                       w-full
                       text-left
@@ -221,11 +192,7 @@ const Navbar = ({
                     </button>
 
                     <button
-                      onClick={() =>
-                        navigate(
-                          "/cart"
-                        )
-                      }
+                      onClick={() => navigate("/cart")}
                       className="
                       w-full
                       text-left
@@ -238,11 +205,7 @@ const Navbar = ({
                     </button>
 
                     <button
-                      onClick={() =>
-                        navigate(
-                          "/wishlist"
-                        )
-                      }
+                      onClick={() => navigate("/wishlist")}
                       className="
                       w-full
                       text-left
@@ -272,9 +235,7 @@ const Navbar = ({
               </>
             ) : (
               <button
-                onClick={() =>
-                  navigate("/login")
-                }
+                onClick={() => navigate("/login")}
                 className="
                 flex
                 items-center
@@ -283,9 +244,7 @@ const Navbar = ({
               >
                 <FaUser />
 
-                <span className="hidden md:block">
-                  Login
-                </span>
+                <span className="hidden md:block">Login</span>
               </button>
             )}
           </div>
@@ -293,9 +252,7 @@ const Navbar = ({
           {/* WISHLIST */}
 
           <button
-            onClick={() =>
-              navigate("/wishlist")
-            }
+            onClick={() => navigate("/wishlist")}
             className="
             flex
             items-center
@@ -304,34 +261,19 @@ const Navbar = ({
           >
             <FaHeart />
 
-            <span className="hidden md:block">
-              Wishlist
-            </span>
+            <span className="hidden md:block">Wishlist</span>
           </button>
 
           {/* DARK MODE */}
 
-          <button
-            onClick={() =>
-              setDarkMode(
-                !darkMode
-              )
-            }
-            className="text-xl"
-          >
-            {darkMode ? (
-              <FaSun />
-            ) : (
-              <FaMoon />
-            )}
+          <button onClick={() => setDarkMode(!darkMode)} className="text-xl">
+            {darkMode ? <FaSun /> : <FaMoon />}
           </button>
 
           {/* CART */}
 
           <button
-            onClick={() =>
-              navigate("/cart")
-            }
+            onClick={() => navigate("/cart")}
             className="
             flex
             items-center
@@ -341,9 +283,7 @@ const Navbar = ({
           >
             <FaShoppingCart />
 
-            <span className="hidden md:block">
-              Cart
-            </span>
+            <span className="hidden md:block">Cart</span>
 
             <span
               className="

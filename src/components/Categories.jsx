@@ -15,7 +15,7 @@ const Categories = ({
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/categories'
+        'https://e-cart-backend-39er.onrender.com/api/categories'
       )
 
       setCategories(response.data)

@@ -22,7 +22,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/reset-password",
+        "https://e-cart-backend-39er.onrender.com/api/auth/reset-password",
         {
           email,
           otp,

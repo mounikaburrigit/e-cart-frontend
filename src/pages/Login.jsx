@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -139,6 +140,24 @@ const Login = () => {
           >
             {loading ? "Logging In..." : "Login"}
           </button>
+        </div>
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              const response = await axios.post(
+                "https://e-cart-backend-39er.onrender.com/api/auth/google-login",
+                {
+                  credential: credentialResponse.credential,
+                },
+              );
+
+              localStorage.setItem("token", response.data.token);
+
+              localStorage.setItem("user", JSON.stringify(response.data.user));
+
+              navigate("/");
+            }}
+          />
         </div>
 
         {/* REGISTER LINK */}
