@@ -37,7 +37,7 @@ const Login = () => {
       setError("");
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://e-cart-backend-39er.onrender.com/api/auth/login",
         {
           email,
           password,
