@@ -2,11 +2,27 @@ import {
   FaShoppingCart,
   FaSearch,
   FaUser,
-  FaHeart,
-  FaMoon,
-  FaSun,
   FaUserCircle,
 } from "react-icons/fa";
+
+import {
+  MdFavoriteBorder,
+  MdLocationOn,
+} from "react-icons/md";
+
+import {
+  BsMoonStars,
+  BsSun,
+  BsGrid,
+  BsBoxSeam,
+} from "react-icons/bs";
+
+import {
+  RiTShirt2Line,
+  RiBeautyLine,
+} from "react-icons/ri";
+
+import { IoPhonePortraitOutline } from "react-icons/io5";
 
 import { useNavigate } from "react-router-dom";
 
@@ -55,244 +71,165 @@ const Navbar = ({ search, setSearch, darkMode, setDarkMode }) => {
 
   return (
     <nav
-      className={`
-      sticky
-      top-0
-      z-50
-      shadow-md
-      ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}
-    `}
-    >
-      <div
-        className="
-        max-w-7xl
-        mx-auto
-        px-4
-        py-4
-        flex
-        items-center
-        justify-between
-        gap-4
-      "
-      >
-        {/* LOGO */}
+  className={`sticky top-0 z-50 shadow-md ${
+    darkMode
+      ? "bg-gray-900 text-white"
+      : "bg-white text-black"
+  }`}
+>
+  <div className="max-w-7xl mx-auto px-4 py-3">
 
-        <h1
-          onClick={() => navigate("/")}
-          className="
+    {/* TOP ROW */}
+
+    <div className="flex items-center justify-between gap-4">
+
+      {/* LOGO */}
+
+      <h1
+        onClick={() => navigate("/")}
+        className="
           text-3xl
-          font-bold
+          font-extrabold
           text-blue-600
           cursor-pointer
+          hover:scale-105
+          transition-all
+          duration-300
         "
-        >
-          ShopX
-        </h1>
+      >
+        ShopX
+      </h1>
 
-        {/* SEARCH */}
+      {/* SEARCH */}
 
-        <div
-          className={`
-          flex
-          items-center
-          rounded-xl
-          px-4
-          py-3
+      <div
+        className={`
+          hidden md:flex
           flex-1
           max-w-2xl
-          ${darkMode ? "bg-gray-800" : "bg-gray-100"}
+          items-center
+          px-4
+          py-3
+          rounded-2xl
+          border
+          ${
+            darkMode
+              ? "bg-gray-800 border-gray-700"
+              : "bg-gray-50 border-gray-200"
+          }
         `}
-        >
-          <FaSearch className="text-gray-500" />
+      >
+        <FaSearch className="text-gray-400" />
 
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="
+            flex-1
+            ml-3
             bg-transparent
             outline-none
-            w-full
-            ml-3
           "
-          />
-        </div>
+        />
+      </div>
 
-        {/* RIGHT SIDE */}
+      {/* RIGHT SIDE */}
 
-        <div
-          className="
-          flex
-          items-center
-          gap-6
-          text-xl
-        "
+      <div className="flex items-center gap-5 text-xl">
+
+        <button
+          onClick={() => navigate("/wishlist")}
+          className="hover:scale-110 transition"
         >
-          {/* PROFILE DROPDOWN */}
+          <MdFavoriteBorder />
+        </button>
 
-          <div className="relative">
-            {isLoggedIn ? (
-              <>
-                <button
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="
-                  flex
-                  items-center
-                  gap-2
-                  text-2xl
-                "
-                >
-                  <FaUserCircle />
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="hover:scale-110 transition"
+        >
+          {darkMode ? <BsSun /> : <BsMoonStars />}
+        </button>
 
-                  <span className="hidden md:block text-base">
-                    {JSON.parse(localStorage.getItem("user"))?.name ||
-                      "Profile"}
-                  </span>
-                </button>
-
-                {/* DROPDOWN */}
-
-                {showDropdown && (
-                  <div
-                    className="
-                    absolute
-                    right-0
-                    mt-4
-                    w-56
-                    bg-white
-                    text-black
-                    rounded-2xl
-                    shadow-2xl
-                    overflow-hidden
-                    z-50
-                  "
-                  >
-                    <button
-                      onClick={() => navigate("/profile")}
-                      className="
-                      w-full
-                      text-left
-                      px-6
-                      py-4
-                      hover:bg-gray-100
-                    "
-                    >
-                      My Profile
-                    </button>
-
-                    <button
-                      onClick={() => navigate("/cart")}
-                      className="
-                      w-full
-                      text-left
-                      px-6
-                      py-4
-                      hover:bg-gray-100
-                    "
-                    >
-                      My Orders
-                    </button>
-
-                    <button
-                      onClick={() => navigate("/wishlist")}
-                      className="
-                      w-full
-                      text-left
-                      px-6
-                      py-4
-                      hover:bg-gray-100
-                    "
-                    >
-                      Wishlist
-                    </button>
-
-                    <button
-                      onClick={logout}
-                      className="
-                      w-full
-                      text-left
-                      px-6
-                      py-4
-                      text-red-500
-                      hover:bg-red-50
-                    "
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="
-                flex
-                items-center
-                gap-2
-              "
-              >
-                <FaUser />
-
-                <span className="hidden md:block">Login</span>
-              </button>
-            )}
-          </div>
-
-          {/* WISHLIST */}
-
-          <button
-            onClick={() => navigate("/wishlist")}
-            className="
-            flex
-            items-center
-            gap-2
-          "
-          >
-            <FaHeart />
-
-            <span className="hidden md:block">Wishlist</span>
-          </button>
-
-          {/* DARK MODE */}
-
-          <button onClick={() => setDarkMode(!darkMode)} className="text-xl">
-            {darkMode ? <FaSun /> : <FaMoon />}
-          </button>
-
-          {/* CART */}
-
-          <button
-            onClick={() => navigate("/cart")}
-            className="
-            flex
-            items-center
-            gap-2
+        <button
+          onClick={() => navigate("/cart")}
+          className="
             relative
+            hover:scale-110
+            transition
           "
-          >
-            <FaShoppingCart />
+        >
+          <FaShoppingCart />
 
-            <span className="hidden md:block">Cart</span>
-
-            <span
-              className="
+          <span
+            className="
               absolute
               -top-2
-              -right-3
+              -right-2
               bg-red-500
               text-white
-              text-xs
-              px-2
+              text-[10px]
+              min-w-[18px]
+              h-[18px]
+              flex
+              items-center
+              justify-center
               rounded-full
             "
-            >
-              {cartItems.length}
-            </span>
-          </button>
-        </div>
+          >
+            {cartItems.length}
+          </span>
+        </button>
+
+        <button
+          onClick={() => navigate("/profile")}
+          className="hover:scale-110 transition"
+        >
+          <FaUserCircle />
+        </button>
+
       </div>
-    </nav>
+    </div>
+
+    {/* MOBILE SEARCH */}
+
+    <div className="md:hidden mt-3">
+      <div
+        className={`
+          flex
+          items-center
+          px-4
+          py-3
+          rounded-2xl
+          border
+          ${
+            darkMode
+              ? "bg-gray-800 border-gray-700"
+              : "bg-gray-50 border-gray-200"
+          }
+        `}
+      >
+        <FaSearch className="text-gray-400" />
+
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="
+            flex-1
+            ml-3
+            bg-transparent
+            outline-none
+          "
+        />
+      </div>
+    </div>
+
+  </div>
+</nav>
   );
 };
 
